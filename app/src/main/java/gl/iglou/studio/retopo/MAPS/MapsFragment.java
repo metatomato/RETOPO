@@ -1,6 +1,7 @@
 package gl.iglou.studio.retopo.MAPS;
 
 
+import android.location.Location;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import gl.iglou.studio.retopo.R;
+import gl.iglou.studio.retopo.ReTopoActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,15 +27,14 @@ import gl.iglou.studio.retopo.R;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private MapFragment mMapFragment;
+    private GoogleMap mMap;
+
+    private Button mButtonPin;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
-        mMapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mMapFragment.getMapAsync(this);
     }
 
 
@@ -40,8 +42,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
+        mButtonPin = (Button) rootView.findViewById(R.id.btn_pin);
+
+        mButtonPin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePosition();
+            }
+        });
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        mMapFragment = (MapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(this);
     }
 
     @Override
@@ -52,9 +71,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("Marker"));
+        mMap = map;
 
+    }
+
+    public void updatePosition() {
+        Location loc = ((ReTopoActivity) getActivity()).getLocation();
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                .title("I'm Here!"));
     }
 }

@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/map"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/map_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"/>
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.MapFragment"/>
+
+    <Button
+        android:id="@+id/btn_pin"
+        android:layout_width="@dimen/btn_pin"
+        android:layout_height="@dimen/btn_pin"
+        android:text="@string/btn_pin"
+        android:textSize="@dimen/font_size"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/button_padding"
+        android:background="@drawable/selector_circle_primary"
+        android:textColor="@color/white_solid"
+        android:stateListAnimator="@animator/button_elevation"
+        android:elevation="@dimen/btn_elevation"
+        android:tint="@color/color_tertiary"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp" />
+
+</RelativeLayout>

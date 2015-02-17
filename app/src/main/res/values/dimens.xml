@@ -29,4 +29,7 @@
     <!-- SPLASH DIMEN -->
     <dimen name="logo_splash">128dp</dimen>
 
+    <!-- MAPS FRAGMENT-->
+    <dimen name="btn_pin">100dp</dimen>
+
 </resources>
