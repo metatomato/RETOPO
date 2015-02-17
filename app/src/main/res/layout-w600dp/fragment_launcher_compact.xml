@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/launcher_container"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="@dimen/content_drawer_offset"
+    android:layout_height="match_parent"
+    android:background="@color/white_solid"
+    android:paddingTop="20dp">
+
+    <ImageButton
+        android:id="@+id/launcher_btn_0"
+        android:layout_width="@dimen/launcher_icon"
+        android:layout_height="@dimen/launcher_icon"
+        android:src="@drawable/selector_icon_maps"
+        android:background="@null"
+        />
+
+</LinearLayout>

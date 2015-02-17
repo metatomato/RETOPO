@@ -10,19 +10,8 @@
         android:id="@+id/launcher_btn_0"
         android:layout_width="@dimen/launcher_icon"
         android:layout_height="@dimen/launcher_icon"
-        android:src="@drawable/selector_icon_maps"
+        android:src="@drawable/icon_maps"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="@null"
-        />
-
-    <ImageView
-        android:id="@+id/launcher_ico"
-        android:layout_width="@dimen/launcher_icon"
-        android:layout_height="@dimen/launcher_icon"
-        android:layout_marginBottom="@dimen/top_margin"
-        android:src="@drawable/iglou_logo"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         />
 

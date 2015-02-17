@@ -7,8 +7,8 @@
     <item name="gray_dark_solid" type="color">#444444</item>
     <item name="black_alpha" type="color">#80000000</item>
     <item name="black_alpha_light" type="color">#18000000</item>
-    <item name="color_primary" type="color">#7cbf4c</item>
-    <item name="color_primary_dark" type="color">#63993d</item>
+    <item name="color_primary" type="color">#00d8ff</item>
+    <item name="color_primary_dark" type="color">#00a2bf</item>
     <item name="color_secondary" type="color">#01a2d6</item>
     <item name="color_secondary_dark" type="color">#017499</item>
     <item name="color_tertiary" type="color">#f8b13c</item>

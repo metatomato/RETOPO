@@ -10,10 +10,9 @@
         android:id="@+id/launcher_btn_0"
         android:layout_width="@dimen/launcher_icon"
         android:layout_height="@dimen/launcher_icon"
-        android:src="@drawable/selector_icon_maps"
+        android:src="@drawable/icon_maps"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:background="@null"
         />
 
     <ImageView

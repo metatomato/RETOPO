@@ -6,27 +6,29 @@
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">80dp</dimen>
-    <dimen name="content_drawer_offset">0dp</dimen>
+    <dimen name="content_drawer_offset">80dp</dimen>
     <dimen name="content_drawer_detail">80dp</dimen>
     <dimen name="content_drawer_compact">80dp</dimen>
     <dimen name="launcher_icon">56dp</dimen>
     <dimen name="diameter">120dp</dimen>
     <dimen name="btn_elevation">4dp</dimen>
 
+
     <!-- COMMON FRAG DIMEN -->
-    <dimen name="font_size_small">10sp</dimen>
-    <dimen name="font_size">15sp</dimen>
-    <dimen name="top_margin">15dp</dimen>
-    <dimen name="top_margin_large">30dp</dimen>
-    <dimen name="right_margin">15dp</dimen>
-    <dimen name="right_margin_large">30dp</dimen>
-    <dimen name="right_margin_xlarge">45dp</dimen>
-    <dimen name="left_margin">15dp</dimen>
-    <dimen name="left_margin_large">30dp</dimen>
-    <dimen name="left_margin_xlarge">45dp</dimen>
-    <dimen name="button_padding">10dp</dimen>
+    <dimen name="font_size_small">15sp</dimen>
+    <dimen name="font_size">20sp</dimen>
+    <dimen name="top_margin">30dp</dimen>
+    <dimen name="top_margin_large">45dp</dimen>
+    <dimen name="right_margin">30dp</dimen>
+    <dimen name="right_margin_large">45dp</dimen>
+    <dimen name="right_margin_xlarge">90dp</dimen>
+    <dimen name="left_margin">30dp</dimen>
+    <dimen name="left_margin_large">60dp</dimen>
+    <dimen name="left_margin_xlarge">90dp</dimen>
+    <dimen name="button_padding">15dp</dimen>
+
 
     <!-- SPLASH DIMEN -->
-    <dimen name="logo_splash">260dp</dimen>
+    <dimen name="logo_splash">520dp</dimen>
 
 </resources>
