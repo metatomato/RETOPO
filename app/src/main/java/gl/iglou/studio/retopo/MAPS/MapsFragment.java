@@ -10,18 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import gl.iglou.studio.retopo.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapsFragment extends Fragment {
+public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
+    private MapFragment mMapFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        mMapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mMapFragment.getMapAsync(this);
     }
 
 
@@ -39,4 +50,11 @@ public class MapsFragment extends Fragment {
         inflater.inflate(R.menu.re_topo,menu);
     }
 
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("Marker"));
+
+    }
 }
