@@ -29,6 +29,6 @@
 
 
     <!-- SPLASH DIMEN -->
-    <dimen name="logo_splash">520dp</dimen>
+    <dimen name="logo_splash">256dp</dimen>
 
 </resources>

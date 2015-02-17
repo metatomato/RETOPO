@@ -4,11 +4,13 @@
     <!-- ReTopo Activity -->
     <string name="fragment_label_maps">Maps</string>
     <string name="app_name">ReTopo</string>
-
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <!-- Menu -->
     <string name="action_about">About</string>
+    <string name="title_activity_splash">ReTopo</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
