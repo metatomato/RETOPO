@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/launcher_container"
+    android:layout_width="@dimen/content_drawer_offset"
+    android:layout_height="match_parent"
+    android:background="@color/white_solid"
+    android:paddingTop="20dp">
+
+    <ImageButton
+        android:id="@+id/launcher_btn_0"
+        android:layout_width="@dimen/launcher_icon"
+        android:layout_height="@dimen/launcher_icon"
+        android:src="@drawable/icon_maps"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <ImageView
+        android:id="@+id/launcher_ico"
+        android:layout_width="@dimen/launcher_icon"
+        android:layout_height="@dimen/launcher_icon"
+        android:layout_marginBottom="@dimen/top_margin"
+        android:src="@drawable/iglou_logo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

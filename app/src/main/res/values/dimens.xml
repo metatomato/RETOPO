@@ -5,5 +5,60 @@
 
     <!-- Per the design guidelines, navigation drawers should be between 240dp and 320dp:
          https://developer.android.com/design/patterns/navigation-drawer.html -->
-    <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="navigation_drawer_width">80dp</dimen>
+    <dimen name="content_drawer_offset">0dp</dimen>
+    <dimen name="content_drawer_detail">80dp</dimen>
+    <dimen name="content_drawer_compact">80dp</dimen>
+    <dimen name="launcher_icon">56dp</dimen>
+    <dimen name="diameter">120dp</dimen>
+    <dimen name="btn_elevation">4dp</dimen>
+
+
+    <!-- ANDROIDPLOT - Default screen margins, per the Android Design guidelines. -->
+    <dimen name="pie_segment_label_font_size">10dp</dimen>
+    <dimen name="title_font_size">20dp</dimen>
+    <dimen name="domain_label_font_size">13dp</dimen>
+    <dimen name="range_label_font_size">13dp</dimen>
+    <dimen name="range_tick_label_font_size">15dp</dimen>
+    <dimen name="domain_tick_label_font_size">15dp</dimen>
+    <dimen name="legend_text_font_size">20dp</dimen>
+
+
+    <!-- COMMON FRAG DIMEN -->
+    <dimen name="font_size_small">10sp</dimen>
+    <dimen name="font_size">15sp</dimen>
+    <dimen name="top_margin">15dp</dimen>
+    <dimen name="top_margin_large">30dp</dimen>
+    <dimen name="right_margin">15dp</dimen>
+    <dimen name="right_margin_large">30dp</dimen>
+    <dimen name="right_margin_xlarge">45dp</dimen>
+    <dimen name="left_margin">15dp</dimen>
+    <dimen name="left_margin_large">30dp</dimen>
+    <dimen name="left_margin_xlarge">45dp</dimen>
+    <dimen name="button_padding">10dp</dimen>
+
+    <!-- MP_FRAG DIMEN -->
+    <dimen name="imageView_album_art_size">260dp</dimen>
+    <dimen name="imageView_album_art_top_margin">30dp</dimen>
+    <dimen name="btn_play_size">140dp</dimen>
+    <dimen name="btn_play_top_margin">30dp</dimen>
+    <dimen name="btn_next_size">80dp</dimen>
+    <dimen name="btn_next_top_margin">80dp</dimen>
+
+    <!-- BT_FRAG DIMEN -->
+    <dimen name="bt_btn_start_stop_size">120dp</dimen>
+    <dimen name="bt_btn_start_stop_top_margin">30dp</dimen>
+
+    <!-- SETTINGS_FRAG DIMEN -->
+    <dimen name="btn_emission_control_size">100dp</dimen>
+    <dimen name="btn_seekbar_size">60dp</dimen>
+    <dimen name="frame_value_size">100dp</dimen>
+    <dimen name="frame_top_margin">25dp</dimen>
+
+    <!-- MONITOR_FRAG DIMEN -->
+    <dimen name="btn_start_stop">80dp</dimen>
+
+    <!-- SPLASH DIMEN -->
+    <dimen name="logo_splash">260dp</dimen>
+
 </resources>
