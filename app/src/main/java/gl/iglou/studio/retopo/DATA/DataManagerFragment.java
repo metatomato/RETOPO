@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -55,9 +57,12 @@ public class DataManagerFragment extends Fragment {
     }
 
     private void parseData() {
-        mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile,".topo");
+        mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile, ".topo");
         for(File file : mTopoFiles) {
             Log.v(TAG,file.getName() + " FOUND!");
+            String data = DataHelper.FileToString(file);
+            JSONObject object = DataHelper.stringToJsonObject(data);
+            Log.v(TAG,"Got " + object.length() + " mapping!");
         }
     }
 }
