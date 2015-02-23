@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import gl.iglou.studio.retopo.DATA.DataManagerFragment;
 import gl.iglou.studio.retopo.MAPS.MapsFragment;
 import gl.iglou.studio.retopo.TRACKS.LocationService;
 
@@ -40,6 +41,7 @@ public class ReTopoActivity extends ActionBarActivity {
 
     private LocationService mLocationService;
     private MapsFragment mMapsGUIFragment;
+    private DataManagerFragment mDataManagerFragment;
 
 
     String[] mFragmentLabel;
@@ -121,6 +123,12 @@ public class ReTopoActivity extends ActionBarActivity {
             mMapsGUIFragment = new MapsFragment();
             fm.beginTransaction().add(mMapsGUIFragment, "BTFrag").commit();
         }
+        if(mDataManagerFragment == null) {
+            mDataManagerFragment = new DataManagerFragment();
+            fm.beginTransaction().add(mDataManagerFragment, "DataFrag").commit();
+        }
+
+
 
         contentViewResolver(MAPS_FRAGMENT);
     }

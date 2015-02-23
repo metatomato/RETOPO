@@ -39,8 +39,8 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
 
     public LocationService(Activity activity) {
         mContext = activity;
-        buildGoogleApiClient();
-       // initGPSLocationService();
+        //buildGoogleApiClient();
+        initGPSLocationService();
     }
 
     void initGPSLocationService() {
@@ -64,14 +64,14 @@ public class LocationService implements GoogleApiClient.ConnectionCallbacks, Goo
         };
 
         // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
     }
 
 
     public void startService() {
         if (!mResolvingError) {  // more about this later
             Log.v(TAG,"Start Service!");
-            mGoogleApiClient.connect();
+           // mGoogleApiClient.connect();
         }
     }
 
