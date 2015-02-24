@@ -1,5 +1,6 @@
 package gl.iglou.studio.retopo.DATA;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -11,6 +12,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Iterator;
 
 /**
  * Created by metatomato on 23.02.15.
@@ -36,20 +40,28 @@ public class DataHelper {
         return object;
     }
 
-    static public String FileToString(File file) {
+
+    static private String readerToString(BufferedReader reader) {
+        String data = "";
+        String s;
+
+        try {
+            while ( (s = reader.readLine()) != null) {
+                data += s;
+            }
+        }
+        catch(IOException e) {
+            Log.v(TAG,"IOException! String Extraction aborted!");
+        }
+
+        return data;
+    }
+
+    static public String fileToString(File file) {
         String extracted = "";
         try {
             BufferedReader buffer = new BufferedReader(new FileReader(file));
-            String s;
-            try {
-                while ( (s = buffer.readLine()) != null) {
-                    extracted += " " + s;
-                    Log.v(TAG,s);
-                }
-            }
-            catch(IOException e) {
-                Log.v(TAG,"IOEcxeption! String Extraction aborted!");
-            }
+            extracted = readerToString(buffer);
         }
         catch(FileNotFoundException e) {
             Log.v(TAG,"File not found. String Extraction aborted!");
@@ -58,4 +70,36 @@ public class DataHelper {
         return extracted;
     }
 
+
+    static public String rawToString(InputStream input) {
+        String data = "";
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        data = readerToString(reader);
+
+        return data;
+    }
+
+
+    static public JSONObject rawToJSONObject(InputStream input) {
+
+        String data = rawToString(input);
+        return stringToJsonObject(data);
+
+    }
+
+
+    static public JSONObject fileToJSONObject(File file)
+    {
+        String data = fileToString(file);
+        return stringToJsonObject(data);
+    }
+
+    static public void printKeys(JSONObject object) {
+        Log.v(TAG,"Extracting keys...");
+        Iterator<String> keys = object.keys();
+        while(keys.hasNext()){
+            Log.v(TAG,keys.next());
+        }
+    }
 }

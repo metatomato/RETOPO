@@ -75,6 +75,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    public void addMarker(Location loc) {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(loc.getLatitude(), loc.getLongitude())));
+    }
+
     public void updatePosition() {
         Location loc = ((ReTopoActivity) getActivity()).getLocation();
         mMap.addMarker(new MarkerOptions()

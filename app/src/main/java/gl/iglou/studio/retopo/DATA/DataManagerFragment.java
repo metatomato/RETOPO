@@ -1,6 +1,8 @@
 package gl.iglou.studio.retopo.DATA;
 
 
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -9,10 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import gl.iglou.studio.retopo.R;
 
@@ -28,10 +34,15 @@ public class DataManagerFragment extends Fragment {
     private final String ROOT_PATH = "RETOPO";
     private final String DATA_PATH = "data";
 
+    private JSONObject mDummyTopo;
+
     private File mRootFile;
     private File mDataFile;
 
     private ArrayList<File> mTopoFiles;
+
+    private Topo mTopo;
+
 
     public DataManagerFragment() {
         // Required empty public constructor
@@ -42,7 +53,8 @@ public class DataManagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
        checkLocalDirTree();
-       parseData();
+       //parseData();
+       loadDummyTopo();
 
     }
 
@@ -60,9 +72,51 @@ public class DataManagerFragment extends Fragment {
         mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile, ".topo");
         for(File file : mTopoFiles) {
             Log.v(TAG,file.getName() + " FOUND!");
-            String data = DataHelper.FileToString(file);
+            String data = DataHelper.fileToString(file);
             JSONObject object = DataHelper.stringToJsonObject(data);
             Log.v(TAG,"Got " + object.length() + " mapping!");
         }
     }
+
+    private void loadDummyTopo() {
+        Resources res = getResources();
+        InputStream input = res.openRawResource(R.raw.kyoto);
+
+        mDummyTopo = DataHelper.rawToJSONObject(input);
+        mTopo = new Topo(TopoHelper.extractTopo(mDummyTopo));
+
+        for(Trace trace : mTopo.getTraces()) {
+            Log.v(TAG,trace.getTitle());
+        }
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
