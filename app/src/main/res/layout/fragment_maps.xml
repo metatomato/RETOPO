@@ -29,4 +29,84 @@
         android:layout_marginBottom="30dp"
         android:layout_marginRight="30dp" />
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/milestone_container"
+        android:background="@color/white_solid"
+        android:elevation="4dp"
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:id="@+id/imageView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="false"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/iglou_logo"
+            android:background="@color/white_solid"
+            android:elevation="4dp"
+            android:layout_marginBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmallInverse"
+            android:text="MileStone 0"
+            android:id="@+id/textView"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:elegantTextHeight="false"
+            android:textColor="@color/color_primary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Title"
+            android:id="@+id/textView2"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="09h35: "
+            android:id="@+id/text_schedule"
+            android:layout_centerVertical="true"
+            android:layout_alignLeft="@+id/text_comment"
+            android:layout_alignTop="@+id/imageView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="19/02/15"
+            android:id="@+id/text_date"
+            android:layout_marginLeft="5dp"
+            android:textSize="10sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Comment that could very long, so it should be shorted with these small dots ... If the user want the full length comment he just has to click on it!"
+            android:id="@+id/text_comment"
+            android:layout_centerVertical="true"
+            android:maxLines="3"
+            android:layout_toRightOf="@+id/imageView"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/text_schedule" />
+    </RelativeLayout>
+
 </RelativeLayout>

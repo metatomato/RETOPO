@@ -33,15 +33,12 @@ public class DataManagerFragment extends Fragment {
 
     private final String ROOT_PATH = "RETOPO";
     private final String DATA_PATH = "data";
-
-    private JSONObject mDummyTopo;
+    private final String TOPO_EXTENSION = ".topo";
 
     private File mRootFile;
     private File mDataFile;
 
     private ArrayList<File> mTopoFiles;
-
-    private Topo mTopo;
 
 
     public DataManagerFragment() {
@@ -53,9 +50,7 @@ public class DataManagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
        checkLocalDirTree();
-       //parseData();
-       loadDummyTopo();
-
+       parseData();
     }
 
     private void checkLocalDirTree() {
@@ -69,26 +64,26 @@ public class DataManagerFragment extends Fragment {
     }
 
     private void parseData() {
-        mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile, ".topo");
-        for(File file : mTopoFiles) {
-            Log.v(TAG,file.getName() + " FOUND!");
-            String data = DataHelper.fileToString(file);
-            JSONObject object = DataHelper.stringToJsonObject(data);
-            Log.v(TAG,"Got " + object.length() + " mapping!");
-        }
+        mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile, TOPO_EXTENSION);
     }
 
-    private void loadDummyTopo() {
+    private Topo loadDummyTopo() {
         Resources res = getResources();
         InputStream input = res.openRawResource(R.raw.kyoto);
 
-        mDummyTopo = DataHelper.rawToJSONObject(input);
-        mTopo = new Topo(TopoHelper.extractTopo(mDummyTopo));
+        JSONObject jsonTopo = DataHelper.rawToJSONObject(input);
+        Topo topo = TopoHelper.extractTopo(jsonTopo);
 
-        for(Trace trace : mTopo.getTraces()) {
-            Log.v(TAG,trace.getTitle());
-        }
+        return topo;
+    }
 
+    public Topo loadTopoFromFile(File file) {
+        JSONObject jsonTopo = DataHelper.fileToJSONObject(file);
+        return TopoHelper.extractTopo(jsonTopo);
+    }
+
+    public ArrayList<File> getTopoFiles() {
+        return mTopoFiles;
     }
 }
 

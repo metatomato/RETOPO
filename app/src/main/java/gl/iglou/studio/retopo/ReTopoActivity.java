@@ -20,6 +20,7 @@ import android.view.WindowManager;
 
 import gl.iglou.studio.retopo.DATA.DataManagerFragment;
 import gl.iglou.studio.retopo.MAPS.MapsFragment;
+import gl.iglou.studio.retopo.TOPO.TopoManagerFragment;
 import gl.iglou.studio.retopo.TRACKS.LocationService;
 
 
@@ -42,6 +43,7 @@ public class ReTopoActivity extends ActionBarActivity {
     private LocationService mLocationService;
     private MapsFragment mMapsGUIFragment;
     private DataManagerFragment mDataManagerFragment;
+    private TopoManagerFragment mTopoManager;
 
 
     String[] mFragmentLabel;
@@ -117,7 +119,7 @@ public class ReTopoActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
-        //Start Maps Fragment
+        //Start Fragments
         FragmentManager fm = getFragmentManager();
         if(mMapsGUIFragment == null) {
             mMapsGUIFragment = new MapsFragment();
@@ -127,7 +129,10 @@ public class ReTopoActivity extends ActionBarActivity {
             mDataManagerFragment = new DataManagerFragment();
             fm.beginTransaction().add(mDataManagerFragment, "DataFrag").commit();
         }
-
+        if(mTopoManager == null) {
+            mTopoManager= new TopoManagerFragment();
+            fm.beginTransaction().add(mTopoManager, "TopoFrag").commit();
+        }
 
 
         contentViewResolver(MAPS_FRAGMENT);
@@ -204,4 +209,12 @@ public class ReTopoActivity extends ActionBarActivity {
     public float getDpWidth() {return mDpWidth;}
 
     public Location getLocation() { return mLocationService.getLocation(); }
+
+    public DataManagerFragment getDataManager() {
+        return mDataManagerFragment;
+    }
+
+    public MapsFragment getmMapsGUIFragment() {
+        return mMapsGUIFragment;
+    }
 }

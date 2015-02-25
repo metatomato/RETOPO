@@ -67,21 +67,23 @@ public class TopoHelper {
         return trace;
     }
 
-    static public ArrayList<Trace> extractTopo(JSONObject object) {
+    static public Topo extractTopo(JSONObject object) {
+        Topo topo = new Topo();
         ArrayList<Trace> traces = new ArrayList<>();
         try {
-            JSONArray topo = object.getJSONArray("topo");
-            for(int i = 0 ; i < topo.length() ; i++) {
-                Trace trace = extractTrace(topo.getJSONObject(i));
+            JSONArray jsonTopo = object.getJSONArray("topo");
+            for(int i = 0 ; i < jsonTopo.length() ; i++) {
+                Trace trace = extractTrace(jsonTopo.getJSONObject(i));
                 traces.add(trace);
                 Log.v(TAG,"Add trace " + trace.getTitle());
             }
+            topo.setTraces(traces);
         }
         catch(JSONException e)
         {
             Log.v(TAG,"Failed to extract topo from JSONObject");
         }
-        return traces;
+        return topo;
     }
 
 }

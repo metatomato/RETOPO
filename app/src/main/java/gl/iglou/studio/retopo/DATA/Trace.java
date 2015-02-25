@@ -49,6 +49,10 @@ public class Trace {
         }
     }
 
+    protected ArrayList<Location> getLocations() {
+        return mLocations;
+    }
+
     public void setTitle(String title) {
         mTitle = title;
     }
