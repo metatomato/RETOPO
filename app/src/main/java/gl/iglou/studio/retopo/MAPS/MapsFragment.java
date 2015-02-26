@@ -4,13 +4,13 @@ package gl.iglou.studio.retopo.MAPS;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -27,12 +27,13 @@ import gl.iglou.studio.retopo.ReTopoActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapsFragment extends Fragment implements OnMapReadyCallback {
+public class MapsFragment extends Fragment implements OnMapReadyCallback, MapsGUIFragment.OnMapsGUIListener {
 
+    private final String TAG = "MapsManager";
+
+    private MapsGUIFragment mMapsGUIFragment;
     private MapFragment mMapFragment;
     private GoogleMap mMap;
-
-    private Button mButtonPin;
 
     private ArrayList<OnMapsEvent> mListeners;
 
@@ -44,22 +45,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mListeners = new ArrayList<>();
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_maps, container, false);
-        mButtonPin = (Button) rootView.findViewById(R.id.btn_pin);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_maps_container, container, false);
 
-        mButtonPin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updatePosition();
-                for(OnMapsEvent listener : mListeners) {
-                    listener.OnPinMeClick();
-                }
-            }
-        });
+        mMapsGUIFragment = (MapsGUIFragment) getChildFragmentManager()
+                .findFragmentById(R.id.maps_gui);
 
         return rootView;
     }
@@ -68,16 +59,14 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mMapFragment = (MapFragment) getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mMapFragment.getMapAsync(this);
+        mMapFragment = mMapsGUIFragment.getMapFragment();
+        if(mMapFragment != null) {
+            mMapFragment.getMapAsync(this);
+        } else {
+            Log.v(TAG, "MapFragment is null!!");
+        }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.re_topo,menu);
-    }
 
     public void setMapsListener(OnMapsEvent listener) {
         mListeners.add(listener);
@@ -86,7 +75,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
     }
 
     public void addMarker(Location loc) {
@@ -111,5 +99,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         LatLng pos = new LatLng(loc.getLatitude(),loc.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 13));
 
+    }
+
+    @Override
+    public void onPinMeClick() {
+        updatePosition();
+        for(OnMapsEvent listener : mListeners) {
+            listener.OnPinMeClick();
+        }
     }
 }

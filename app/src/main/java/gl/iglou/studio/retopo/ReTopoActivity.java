@@ -20,6 +20,7 @@ import android.view.WindowManager;
 
 import gl.iglou.studio.retopo.DATA.DataManagerFragment;
 import gl.iglou.studio.retopo.MAPS.MapsFragment;
+import gl.iglou.studio.retopo.MAPS.MapsGUIFragment;
 import gl.iglou.studio.retopo.TOPO.TopoManagerFragment;
 import gl.iglou.studio.retopo.TRACKS.LocationService;
 
@@ -41,7 +42,7 @@ public class ReTopoActivity extends ActionBarActivity {
     private View mNavigationDrawer;
 
     private LocationService mLocationService;
-    private MapsFragment mMapsGUIFragment;
+    private MapsFragment mMapsManager;
     private DataManagerFragment mDataManagerFragment;
     private TopoManagerFragment mTopoManager;
 
@@ -121,9 +122,9 @@ public class ReTopoActivity extends ActionBarActivity {
 
         //Start Fragments
         FragmentManager fm = getFragmentManager();
-        if(mMapsGUIFragment == null) {
-            mMapsGUIFragment = new MapsFragment();
-            fm.beginTransaction().add(mMapsGUIFragment, "BTFrag").commit();
+        if(mMapsManager == null) {
+            mMapsManager = new MapsFragment();
+            fm.beginTransaction().add(mMapsManager, "MapsFrag").commit();
         }
         if(mDataManagerFragment == null) {
             mDataManagerFragment = new DataManagerFragment();
@@ -133,7 +134,6 @@ public class ReTopoActivity extends ActionBarActivity {
             mTopoManager= new TopoManagerFragment();
             fm.beginTransaction().add(mTopoManager, "TopoFrag").commit();
         }
-
 
         contentViewResolver(MAPS_FRAGMENT);
     }
@@ -163,10 +163,10 @@ public class ReTopoActivity extends ActionBarActivity {
             default:
             case MAPS_FRAGMENT :
 
-                if(mMapsGUIFragment == null) {
-                    mMapsGUIFragment = new MapsFragment();
+                if(mMapsManager == null) {
+                    mMapsManager = new MapsFragment();
                 }
-                main_content_fragment = mMapsGUIFragment;
+                main_content_fragment = mMapsManager;
 
                 break;
         }
@@ -214,7 +214,8 @@ public class ReTopoActivity extends ActionBarActivity {
         return mDataManagerFragment;
     }
 
-    public MapsFragment getmMapsGUIFragment() {
-        return mMapsGUIFragment;
+    public MapsFragment getMapsManager() {
+        return mMapsManager;
     }
+
 }

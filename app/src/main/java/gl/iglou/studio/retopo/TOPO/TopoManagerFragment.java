@@ -50,7 +50,7 @@ public class TopoManagerFragment extends Fragment implements OnMapsEvent{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mMaps = ((ReTopoActivity)getActivity()).getmMapsGUIFragment();
+        mMaps = ((ReTopoActivity)getActivity()).getMapsManager();
         mDataManager = ((ReTopoActivity)getActivity()).getDataManager();
 
         mMaps.setMapsListener(this);

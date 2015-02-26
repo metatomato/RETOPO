@@ -24,10 +24,11 @@
         android:elevation="@dimen/btn_elevation"
         android:tint="@color/color_tertiary"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentBottom="false"
         android:layout_alignParentEnd="false"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="30dp" />
+        android:layout_marginBottom="@dimen/right_margin"
+        android:layout_marginRight="@dimen/right_margin"
+        android:layout_above="@+id/milestone_container" />
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -36,54 +37,48 @@
         android:id="@+id/milestone_container"
         android:background="@color/white_solid"
         android:elevation="4dp"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="true">
 
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:id="@+id/imageView"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
-            android:layout_marginLeft="5dp"
             android:layout_alignParentLeft="true"
             android:src="@drawable/iglou_logo"
             android:background="@color/white_solid"
             android:elevation="4dp"
-            android:layout_marginBottom="5dp" />
+            android:layout_below="@+id/text_title"
+            android:layout_margin="5dp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmallInverse"
-            android:text="MileStone 0"
-            android:id="@+id/textView"
-            android:layout_alignTop="@+id/imageView"
-            android:layout_centerHorizontal="true"
-            android:textStyle="bold"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
-            android:elegantTextHeight="false"
-            android:textColor="@color/color_primary" />
-
-        <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Title"
-            android:id="@+id/textView2"
+            android:id="@+id/text_title"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white_solid"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@color/color_primary" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="09h35: "
+            android:text="09h35"
             android:id="@+id/text_schedule"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/text_comment"
-            android:layout_alignTop="@+id/imageView" />
+            android:layout_alignTop="@+id/imageView"
+            android:textSize="@dimen/font_size_small"
+            android:textColor="@color/color_secondary" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,10 +86,12 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="19/02/15"
             android:id="@+id/text_date"
-            android:layout_marginLeft="5dp"
-            android:textSize="10sp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true" />
+            android:textSize="@dimen/font_size_small"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/color_tertiary"
+            android:layout_marginRight="@dimen/maps_frame_small_margin"
+            android:layout_alignBottom="@+id/text_schedule" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -105,8 +102,8 @@
             android:layout_centerVertical="true"
             android:maxLines="3"
             android:layout_toRightOf="@+id/imageView"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/text_schedule" />
+            android:layout_below="@+id/text_schedule"
+            android:layout_marginRight="@dimen/maps_frame_small_margin" />
     </RelativeLayout>
 
 </RelativeLayout>

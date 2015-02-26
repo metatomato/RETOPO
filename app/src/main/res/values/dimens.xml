@@ -14,7 +14,7 @@
     <dimen name="btn_elevation">4dp</dimen>
 
     <!-- COMMON FRAG DIMEN -->
-    <dimen name="font_size_small">10sp</dimen>
+    <dimen name="font_size_small">12sp</dimen>
     <dimen name="font_size">15sp</dimen>
     <dimen name="top_margin">15dp</dimen>
     <dimen name="top_margin_large">30dp</dimen>
@@ -30,6 +30,7 @@
     <dimen name="logo_splash">128dp</dimen>
 
     <!-- MAPS FRAGMENT-->
-    <dimen name="btn_pin">100dp</dimen>
+    <dimen name="btn_pin">80dp</dimen>
+    <dimen name="maps_frame_small_margin">5dp</dimen>
 
 </resources>
