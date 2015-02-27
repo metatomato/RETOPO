@@ -1,6 +1,10 @@
 package gl.iglou.studio.retopo.MAPS;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -24,18 +28,18 @@ import java.io.InputStream;
 import java.util.Calendar;
 
 import gl.iglou.studio.retopo.R;
+import gl.iglou.studio.retopo.ReTopoActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
+public class MapsGUIFragment extends Fragment implements View.OnTouchListener, Animator.AnimatorListener{
 
     private final String TAG = "MapsGUI";
 
     private Button mButtonPin;
     private MapFragment mMapFragment;
 
-    private View mFrameTouch;
     private View mTraceContainer;
     private ImageView mImageTrace;
     private TextView mTextTitle;
@@ -44,6 +48,14 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
     private TextView mtextDate;
 
     private float mLastX = 0.f;
+    private float initX = 0.f;
+    private float dX = 0.f;
+    private boolean mIsCardInitialed = false;
+    private float mCardX,mCardY;
+    private int mDisplayX, mDisplayY;
+    private ObjectAnimator mAnimCardOut;
+    private ObjectAnimator mAnimCardIn;
+
 
     private OnMapsGUIListener mMapsManager;
 
@@ -62,7 +74,7 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
             @Override
             public void onClick(View v) {
                 mMapsManager.onPinMeClick();
-                mTraceContainer.setX(0);
+                animateCardIn();
             }
         });
 
@@ -78,8 +90,11 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
         mTextTime = (TextView) rootView.findViewById(R.id.text_time);
         mtextDate = (TextView) rootView.findViewById(R.id.text_date);
 
-        mFrameTouch = rootView.findViewById(R.id.frame_touch);
-        mFrameTouch.setOnTouchListener(this);
+        mTraceContainer.setOnTouchListener(this);
+
+       mDisplayX = ((ReTopoActivity) getActivity()).getDisplayWidth();
+       mDisplayY = ((ReTopoActivity)getActivity()).getDisplayHeigh();
+
 
         return rootView;
     }
@@ -87,8 +102,6 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     public MapFragment getMapFragment() {
@@ -107,17 +120,54 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        float currentX = event.getX();
-        float dX =  currentX - mLastX;
-        if(v.equals(mTraceContainer)) {
-           mTraceContainer.setTranslationX(currentX); ;
+
+        if(!mIsCardInitialed) {
+            mCardX = mTraceContainer.getX();
+            mCardY = mTraceContainer.getY();
+
+            Log.v(TAG,"cardX: " + String.valueOf(mCardX)
+                    + "cardY: " + String.valueOf(mCardY) );
+            mIsCardInitialed = true;
         }
-        Log.v(TAG,"X: " + String.valueOf(currentX));
-        mLastX = currentX;
+
+        final int action = event.getAction();
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                initX = event.getRawX();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                dX = initX - event.getRawX();
+                Log.v(TAG,"dx " + String.valueOf(dX) + "    X: " + String.valueOf(mTraceContainer.getX()));
+                mTraceContainer.setTranslationX(-dX);
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.v(TAG, "ACTION_UP");
+                float currentX = mTraceContainer.getX();
+                float finalX = mCardX;
+                long duration = 500;
+                if(currentX < (-1* mTraceContainer.getWidth()/2f) ) {
+                    finalX = -1* mTraceContainer.getWidth();
+                    duration = 100;
+                }
+                mAnimCardOut = ObjectAnimator.ofFloat(mTraceContainer, "X", currentX, finalX);
+                mAnimCardOut.setDuration(duration);
+                mAnimCardOut.addListener(this);
+                mAnimCardOut.start();
+                break;
+            case MotionEvent.ACTION_CANCEL:
+
+        }
 
         return false;
     }
 
+    private void animateCardIn() {
+        mTraceContainer.setX(mCardX);
+        mAnimCardIn = ObjectAnimator.ofFloat(mTraceContainer, "Y", mDisplayY, mCardY);
+        mAnimCardIn.setDuration(400);
+        mAnimCardIn.start();
+    }
 
 
     public void setMileStoneCard(Long date, String title, String comment, String photo) {
@@ -157,4 +207,27 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener{
         mtextDate.setText(android.text.format.DateFormat.getDateFormat(getActivity()).format(date * 1000L));
     }
 
+    @Override
+    public void onAnimationStart(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationEnd(Animator animation) {
+        if(animation.equals(mAnimCardOut)) {
+            if(mTraceContainer.getX() < mCardX) {
+                animateCardIn();
+            }
+        }
+    }
+
+    @Override
+    public void onAnimationCancel(Animator animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animator animation) {
+
+    }
 }

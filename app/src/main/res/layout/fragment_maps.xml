@@ -106,9 +106,5 @@
             android:layout_marginRight="@dimen/maps_frame_small_margin" />
     </RelativeLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/frame_touch"/>
 
 </RelativeLayout>

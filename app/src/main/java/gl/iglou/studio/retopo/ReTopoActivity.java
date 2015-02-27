@@ -4,6 +4,7 @@ package gl.iglou.studio.retopo;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +34,8 @@ public class ReTopoActivity extends ActionBarActivity {
     private DisplayMetrics mDisplayMetrics;
     private float mDpHeight;
     private float mDpWidth;
+    private int mDisplayWidth;
+    private int mDisplayHeigh;
 
     final private int MAPS_FRAGMENT = 0;
 
@@ -69,10 +73,17 @@ public class ReTopoActivity extends ActionBarActivity {
 
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
 
+        //Metrics Stuffs
         mDisplayMetrics = this.getResources().getDisplayMetrics();
 
         mDpHeight = mDisplayMetrics.heightPixels / mDisplayMetrics.density;
         mDpWidth = mDisplayMetrics.widthPixels / mDisplayMetrics.density;
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        mDisplayWidth = size.x;
+        mDisplayHeigh = size.y;
 
         if (mToolbar  != null) {
             setSupportActionBar(mToolbar);
@@ -205,6 +216,13 @@ public class ReTopoActivity extends ActionBarActivity {
 
 
 
+    public int getDisplayWidth() {
+        return mDisplayWidth;
+    }
+
+    public int getDisplayHeigh() {
+        return mDisplayHeigh;
+    }
 
     public float getDpWidth() {return mDpWidth;}
 
