@@ -34,6 +34,8 @@ public class TopoManagerFragment extends Fragment implements OnMapsEvent{
 
     private ArrayList<Topo> mTopos;
 
+    private Topo mCurrentTopo;
+
 
     public TopoManagerFragment() {
         // Required empty public constructor
@@ -60,18 +62,18 @@ public class TopoManagerFragment extends Fragment implements OnMapsEvent{
             mTopos.add(mDataManager.loadTopoFromFile(file));
         }
 
+        if(!mTopos.isEmpty()) {
+            mCurrentTopo = mTopos.get(0);
+        }
+
+    }
+
+    public Topo getCurrentTopo() {
+        return mCurrentTopo;
     }
 
     @Override
     public void OnPinMeClick() {
-
-        Location loc = mTopos.get(0).getLocation();
-        String title =  mTopos.get(0).getTitle();
-
-        Log.v(TAG,"OnPinClick from TopoManager!");
-
-        mMaps.addMarker(loc, title);
-        mMaps.updateCamera(loc);
 
 
     }

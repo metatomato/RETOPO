@@ -1,6 +1,7 @@
 package gl.iglou.studio.retopo.DATA;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,8 @@ import java.util.ArrayList;
  */
 public class Topo extends Trace {
 
+    private final String TAG = "Topo";
+
     private ArrayList<Trace> mTraces;
 
     public Topo() {
@@ -16,7 +19,7 @@ public class Topo extends Trace {
     };
 
     public Topo(ArrayList<Trace> traces) {
-        mTraces = traces;
+       setTraces(traces);
     }
 
     public ArrayList<Trace> getTraces() {
@@ -27,8 +30,11 @@ public class Topo extends Trace {
         mTraces.clear();
         mTraces = traces;
 
-        setTitle(traces.get(0).getTitle());
-        setLocations(traces.get(0).getLocations());
+        if(!mTraces.isEmpty()) {
+            init(mTraces.get(0));
+        }
+
+        Log.v(TAG, "Topo details :\n" + toString());
     }
 
     public Location getLocation() {

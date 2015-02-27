@@ -16,20 +16,25 @@ public class TopoHelper {
 
     static private String TAG = "DataHelper";
 
-    static private String GPS_KEY = "GPS";
-
     static public Trace extractTrace(JSONObject object) {
         Trace trace = new Trace();
-        String title = "";
-        String provider = "JsonImport";
-        ArrayList<Location> GPS = new ArrayList<>();
         try {
             JSONObject jsonGeometry = object.getJSONObject("geometry");
             JSONObject jsonProperties = object.getJSONObject("properties");
             JSONArray jsonCoord = jsonGeometry.getJSONArray("coordinates");
+            JSONArray jsonPhotos = jsonProperties.getJSONArray("photos");
+            JSONArray jsonTags = jsonProperties.getJSONArray("tags");
 
+            Long date = 0L;
+            String title = "";
+            String comment = "";
+            String provider = "JsonImport";
+            ArrayList<Location> GPS = new ArrayList<>();
+            ArrayList<String> photos = new ArrayList<>();
+            ArrayList<String> tags = new ArrayList<>();
             double latitude = 0.0;
             double longitude = 0.0;
+
             int len = jsonCoord.length();
 
             if(len > 2 ) {
@@ -50,20 +55,38 @@ public class TopoHelper {
                 GPS.add(loc);
             }
 
-            title = jsonProperties.getString("title");
 
-            Log.v(TAG,"Trace extracted : " + title);
-            for(Location loc : GPS) {
-                Log.v(TAG, "lat: " + loc.getLatitude() + "    lon: " + loc.getLongitude());
+            date = jsonProperties.getLong("date");
+            title = jsonProperties.getString("title");
+            comment = jsonProperties.getString("comment");
+
+
+            int photoNum = jsonPhotos.length();
+            for(int i = 0 ; i < photoNum ; i++  )
+            {
+                photos.add(jsonPhotos.getString(i));
             }
 
-            trace.setLocations(GPS);
+            int tagNum = jsonTags.length();
+            for(int i = 0 ; i < tagNum ; i++  )
+            {
+                tags.add(jsonTags.getString(i));
+            }
+
+            trace.setDate(date);
             trace.setTitle(title);
+            trace.setComment(comment);
+            trace.setLocations(GPS);
+            trace.setPhotos(photos);
+            trace.setTags(tags);
 
         }
         catch(JSONException e) {
             Log.v(TAG,"Failed to extract the GPS data from JSON Array");
         }
+
+        //Log.v(TAG,"Extracted : " + trace.toString());
+
         return trace;
     }
 
@@ -75,7 +98,6 @@ public class TopoHelper {
             for(int i = 0 ; i < jsonTopo.length() ; i++) {
                 Trace trace = extractTrace(jsonTopo.getJSONObject(i));
                 traces.add(trace);
-                Log.v(TAG,"Add trace " + trace.getTitle());
             }
             topo.setTraces(traces);
         }

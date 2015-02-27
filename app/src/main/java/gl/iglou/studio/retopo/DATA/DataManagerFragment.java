@@ -2,6 +2,7 @@ package gl.iglou.studio.retopo.DATA;
 
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -39,6 +40,8 @@ public class DataManagerFragment extends Fragment {
     private File mDataFile;
 
     private ArrayList<File> mTopoFiles;
+
+    private ArrayList<Bitmap> mPhotos;
 
 
     public DataManagerFragment() {
@@ -85,6 +88,7 @@ public class DataManagerFragment extends Fragment {
     public ArrayList<File> getTopoFiles() {
         return mTopoFiles;
     }
+
 }
 
 

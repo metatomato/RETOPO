@@ -218,4 +218,8 @@ public class ReTopoActivity extends ActionBarActivity {
         return mMapsManager;
     }
 
+    public TopoManagerFragment getTopoManager() {
+        return mTopoManager;
+    }
+
 }

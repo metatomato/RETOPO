@@ -45,7 +45,7 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:id="@+id/imageView"
+            android:id="@+id/image_trace"
             android:layout_alignParentBottom="false"
             android:layout_alignParentStart="false"
             android:layout_alignParentLeft="true"
@@ -73,10 +73,10 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="09h35"
-            android:id="@+id/text_schedule"
+            android:id="@+id/text_time"
             android:layout_centerVertical="true"
             android:layout_alignLeft="@+id/text_comment"
-            android:layout_alignTop="@+id/imageView"
+            android:layout_alignTop="@+id/image_trace"
             android:textSize="@dimen/font_size_small"
             android:textColor="@color/color_secondary" />
 
@@ -91,7 +91,7 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/color_tertiary"
             android:layout_marginRight="@dimen/maps_frame_small_margin"
-            android:layout_alignBottom="@+id/text_schedule" />
+            android:layout_alignBottom="@+id/text_time" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,9 +101,14 @@
             android:id="@+id/text_comment"
             android:layout_centerVertical="true"
             android:maxLines="3"
-            android:layout_toRightOf="@+id/imageView"
-            android:layout_below="@+id/text_schedule"
+            android:layout_toRightOf="@+id/image_trace"
+            android:layout_below="@+id/text_time"
             android:layout_marginRight="@dimen/maps_frame_small_margin" />
     </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frame_touch"/>
 
 </RelativeLayout>

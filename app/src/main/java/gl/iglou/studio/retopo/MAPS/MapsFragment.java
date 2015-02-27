@@ -21,8 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import gl.iglou.studio.retopo.DATA.Topo;
+import gl.iglou.studio.retopo.DATA.Trace;
 import gl.iglou.studio.retopo.R;
 import gl.iglou.studio.retopo.ReTopoActivity;
+import gl.iglou.studio.retopo.TOPO.TopoManagerFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +39,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, MapsGU
     private GoogleMap mMap;
 
     private ArrayList<OnMapsEvent> mListeners;
+
+    private TopoManagerFragment mTopoManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, MapsGU
         } else {
             Log.v(TAG, "MapFragment is null!!");
         }
+
+        mTopoManager = ((ReTopoActivity)getActivity()).getTopoManager();
     }
 
 
@@ -101,11 +108,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback, MapsGU
 
     }
 
+    public void printTrace(Trace trace) {
+
+        mMapsGUIFragment.setMileStoneCard(
+                trace.getDate(),
+                trace.getTitle(),
+                trace.getComment(),
+                trace.getPhoto(0));
+    }
+
     @Override
     public void onPinMeClick() {
-        updatePosition();
         for(OnMapsEvent listener : mListeners) {
             listener.OnPinMeClick();
         }
+        Topo topo = mTopoManager.getCurrentTopo();
+        Location loc = topo.getLocation(0);
+        addMarker(loc);
+        updateCamera(loc);
+        printTrace(topo);
     }
 }
