@@ -106,5 +106,14 @@
             android:layout_marginRight="@dimen/maps_frame_small_margin" />
     </RelativeLayout>
 
+    <gl.iglou.studio.retopo.MAPS.MilestoneCard
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:id="@+id/milestone_container_0"
+        android:background="@color/white_solid"
+        android:elevation="4dp"
+        android:layout_margin="5dp"
+        android:clickable="true"
+        android:layout_above="@+id/milestone_container"/>
 
 </RelativeLayout>

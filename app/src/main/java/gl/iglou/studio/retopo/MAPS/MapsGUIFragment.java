@@ -47,6 +47,8 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     private TextView mTextTime;
     private TextView mtextDate;
 
+    private MilestoneCard mCard;
+
     private float mLastX = 0.f;
     private float initX = 0.f;
     private float dX = 0.f;
@@ -89,6 +91,8 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
         mTextComment = (TextView) rootView.findViewById(R.id.text_comment);
         mTextTime = (TextView) rootView.findViewById(R.id.text_time);
         mtextDate = (TextView) rootView.findViewById(R.id.text_date);
+
+        mCard = (MilestoneCard) rootView.findViewById(R.id.milestone_container_0);
 
         mTraceContainer.setOnTouchListener(this);
 
@@ -176,6 +180,8 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
         setTitle(title);
         setTextComment(comment);
         setImageTrace(photo);
+
+        mCard.setMileStoneCard(date,title,comment,photo);
     }
 
     public void setTitle(String title) {
