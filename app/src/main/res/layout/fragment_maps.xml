@@ -30,7 +30,7 @@
         android:layout_marginRight="@dimen/right_margin"
         android:layout_above="@+id/milestone_container" />
 
-    <RelativeLayout
+    <gl.iglou.studio.retopo.MAPS.MilestoneCard
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
@@ -38,82 +38,17 @@
         android:background="@color/white_solid"
         android:elevation="4dp"
         android:layout_margin="5dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:clickable="true">
+        android:clickable="true"/>
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:id="@+id/image_trace"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/iglou_logo"
-            android:background="@color/white_solid"
-            android:elevation="4dp"
-            android:layout_below="@+id/text_title"
-            android:layout_margin="5dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Title"
-            android:id="@+id/text_title"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/white_solid"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:background="@color/color_primary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="09h35"
-            android:id="@+id/text_time"
-            android:layout_centerVertical="true"
-            android:layout_alignLeft="@+id/text_comment"
-            android:layout_alignTop="@+id/image_trace"
-            android:textSize="@dimen/font_size_small"
-            android:textColor="@color/color_secondary" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="19/02/15"
-            android:id="@+id/text_date"
-            android:textSize="@dimen/font_size_small"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/color_tertiary"
-            android:layout_marginRight="@dimen/maps_frame_small_margin"
-            android:layout_alignBottom="@+id/text_time" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Comment that could very long, so it should be shorted with these small dots ... If the user want the full length comment he just has to click on it!"
-            android:id="@+id/text_comment"
-            android:layout_centerVertical="true"
-            android:maxLines="3"
-            android:layout_toRightOf="@+id/image_trace"
-            android:layout_below="@+id/text_time"
-            android:layout_marginRight="@dimen/maps_frame_small_margin" />
-    </RelativeLayout>
 
     <gl.iglou.studio.retopo.MAPS.MilestoneCard
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:id="@+id/milestone_container_0"
-        android:background="@color/white_solid"
-        android:elevation="4dp"
+        android:background="@color/gray_dark_solid"
+        android:elevation="0dp"
         android:layout_margin="5dp"
         android:clickable="true"
-        android:layout_above="@+id/milestone_container"/>
+        android:layout_below="@+id/milestone_container"/>
 
 </RelativeLayout>
