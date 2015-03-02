@@ -12,6 +12,8 @@ import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 
 import com.google.android.gms.maps.MapFragment;
@@ -41,12 +43,14 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     private float dX = 0.f;
     private boolean mIsCardInitialed = false;
     private boolean mIsCardOut = false;
+    private boolean mIsCardAnimated = false;
     private float mCardZeroX, mCardZeroY;
     private float mCardOneX, mCardOneY;
     private float mCardWidth, mCardHeight;
     private int mDisplayX, mDisplayY;
     private ObjectAnimator mAnimCardOut;
     private ObjectAnimator mAnimCardIn;
+    private ObjectAnimator mAnimFadeCardIn;
 
 
     private OnMapsGUIListener mMapsManager;
@@ -133,9 +137,11 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
             case MotionEvent.ACTION_MOVE:
                 dX = initX - event.getRawX();
                 mDisplacementRatio = dX / mCardWidth;
-                mOnScreenCard.setTranslationX(-dX);
-                //mOffScreenCard.setTranslationY(-1*mCardHeight * mDisplacementRatio);
-                mOffScreenCard.setY(initCardY - mCardHeight * mDisplacementRatio);
+                if(!mIsCardAnimated) {
+                    mOnScreenCard.setTranslationX(-dX);
+                    mOffScreenCard.setY(initCardY - mCardHeight * mDisplacementRatio);
+                    mOffScreenCard.setAlpha(mDisplacementRatio);
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 Log.v(TAG, "ACTION_UP");
@@ -143,15 +149,18 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
                 float currentY = mOffScreenCard.getY();
                 float finalX = mCardZeroX;
                 float finalY = mCardOneY;
+                float finalAlpha = 0f;
                 long duration = 500;
                 if(currentX < (-1* mCardWidth/2f) ) {
                     finalX = -1* mCardWidth;
                     finalY = mCardZeroY;
+                    finalAlpha = 1f;
                     duration = 100;
                     mIsCardOut = true;
                 }
                 animateCardOut(currentX,finalX,duration);
                 animateCardIn(currentY,finalY,duration);
+                animateCardFadeIn(mDisplacementRatio,finalAlpha,duration);
                 break;
             case MotionEvent.ACTION_CANCEL:
 
@@ -161,6 +170,7 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     }
 
     private void animateCardOut(float from, float to, long duration) {
+        mIsCardAnimated = true;
         mAnimCardOut = ObjectAnimator.ofFloat(mOnScreenCard, "X", from, to);
         mAnimCardOut.setDuration(duration);
         mAnimCardOut.addListener(this);
@@ -169,9 +179,16 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
 
     private void animateCardIn(float from, float to, long duration) {
         mAnimCardIn = ObjectAnimator.ofFloat(mOffScreenCard, "Y", from, to);
-        mAnimCardIn.setDuration(duration);
+        mAnimCardIn.setDuration(400);
         mAnimCardIn.addListener(this);
+        mAnimCardIn.setInterpolator(new OvershootInterpolator(5f));
         mAnimCardIn.start();
+    }
+
+    private void animateCardFadeIn(float from, float to, long duration) {
+        mAnimFadeCardIn = ObjectAnimator.ofFloat(mOffScreenCard,"alpha", from,1f);
+        mAnimFadeCardIn.setDuration(duration);
+        mAnimFadeCardIn.start();
     }
 
 
@@ -190,11 +207,11 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        if(animation.equals(mAnimCardOut) && mIsCardOut) {
+        if(animation.equals(mAnimCardOut)) {
 
         }
-        if(animation.equals(mAnimCardIn) && mIsCardOut ){
-
+        if(animation.equals(mAnimCardIn)){
+            mIsCardAnimated = false;
         }
         if(mIsCardOut) {
             mOnScreenCard.setX(mCardOneX);
