@@ -25,11 +25,10 @@ import gl.iglou.studio.retopo.ReTopoActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TopoManagerFragment extends Fragment implements OnMapsEvent{
+public class TopoManagerFragment extends Fragment{
 
     private final String TAG = "TopoManager";
 
-    private MapsFragment mMaps;
     private DataManagerFragment mDataManager;
 
     private ArrayList<Topo> mTopos;
@@ -52,10 +51,7 @@ public class TopoManagerFragment extends Fragment implements OnMapsEvent{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mMaps = ((ReTopoActivity)getActivity()).getMapsManager();
         mDataManager = ((ReTopoActivity)getActivity()).getDataManager();
-
-        mMaps.setMapsListener(this);
 
         ArrayList<File> files = mDataManager.getTopoFiles();
         for(File file : files){
@@ -72,9 +68,5 @@ public class TopoManagerFragment extends Fragment implements OnMapsEvent{
         return mCurrentTopo;
     }
 
-    @Override
-    public void OnPinMeClick() {
 
-
-    }
 }

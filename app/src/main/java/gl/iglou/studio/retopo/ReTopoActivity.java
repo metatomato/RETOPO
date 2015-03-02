@@ -133,10 +133,6 @@ public class ReTopoActivity extends ActionBarActivity {
 
         //Start Fragments
         FragmentManager fm = getFragmentManager();
-        if(mMapsManager == null) {
-            mMapsManager = new MapsFragment();
-            fm.beginTransaction().add(mMapsManager, "MapsFrag").commit();
-        }
         if(mDataManagerFragment == null) {
             mDataManagerFragment = new DataManagerFragment();
             fm.beginTransaction().add(mDataManagerFragment, "DataFrag").commit();
@@ -144,6 +140,10 @@ public class ReTopoActivity extends ActionBarActivity {
         if(mTopoManager == null) {
             mTopoManager= new TopoManagerFragment();
             fm.beginTransaction().add(mTopoManager, "TopoFrag").commit();
+        }
+        if(mMapsManager == null) {
+            mMapsManager = new MapsFragment();
+            fm.beginTransaction().add(mMapsManager, "MapsFrag").commit();
         }
 
         contentViewResolver(MAPS_FRAGMENT);

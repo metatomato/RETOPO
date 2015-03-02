@@ -4,19 +4,26 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.InputStream;
 
+import gl.iglou.studio.retopo.DATA.DataManagerFragment;
+import gl.iglou.studio.retopo.DATA.Trace;
 import gl.iglou.studio.retopo.R;
+import gl.iglou.studio.retopo.ReTopoActivity;
 
 /**
  * Created by metatomato on 01.03.15.
  */
 public class MilestoneCard extends RelativeLayout {
+
+    private final String TAG = "MapsGUI";
 
     private ImageView mImageTrace;
     private TextView mTextTitle;
@@ -63,6 +70,14 @@ public class MilestoneCard extends RelativeLayout {
         setImageTrace(photo);
     }
 
+    public void setMileStoneCard(Trace milestone) {
+        setTime(milestone.getDate());
+        setDate(milestone.getDate());
+        setTitle(milestone.getTitle());
+        setTextComment(milestone.getComment());
+        setImageTrace(milestone.getPhoto(0));
+    }
+
     public void setTitle(String title) {
         mTextTitle.setText(title);
     }
@@ -72,16 +87,13 @@ public class MilestoneCard extends RelativeLayout {
     }
 
     public void setImageTrace(String image) {
-        int imageId = this.getResources().getIdentifier(
-                image.substring(0, image.lastIndexOf('.'))
-                , "raw"
-                , mContext.getPackageName()
-        );
-
-        InputStream imageIS = this.getResources().openRawResource(imageId);
-        Bitmap myImage = BitmapFactory.decodeStream(imageIS);
-
-        mImageTrace.setImageBitmap(myImage);
+        Log.e(TAG, "Loading image trace " + image);
+        DataManagerFragment dataManager = ((ReTopoActivity) mContext).getDataManager();
+        if(dataManager.isPhotoLoaded(image)) {
+            mImageTrace.setImageBitmap(dataManager.getBitmap(image));
+        } else {
+            mImageTrace. setImageResource(R.drawable.iglou_logo);
+        }
     }
 
     public void setTime(Long date) {

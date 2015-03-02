@@ -2,9 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/maps_gui"
+    <FrameLayout
+        android:id="@+id/maps_frag_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="gl.iglou.studio.retopo.MAPS.MapsGUIFragment"/>
+        android:layout_height="match_parent"/>
 </FrameLayout>

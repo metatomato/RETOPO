@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <gl.iglou.studio.retopo.MAPS.MilestoneCard
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:id="@+id/milestone_container"
+        android:background="@color/white_solid"
+        android:elevation="4dp"
+        android:layout_margin="5dp"/>
+
+</FrameLayout>

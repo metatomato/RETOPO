@@ -3,9 +3,11 @@ package gl.iglou.studio.retopo.DATA;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,11 +43,12 @@ public class DataManagerFragment extends Fragment {
 
     private ArrayList<File> mTopoFiles;
 
-    private ArrayList<Bitmap> mPhotos;
+    private ArrayMap<String,Bitmap> mPhotos;
 
 
     public DataManagerFragment() {
         // Required empty public constructor
+        mPhotos = new ArrayMap<>();
     }
 
     @Override
@@ -82,7 +85,39 @@ public class DataManagerFragment extends Fragment {
 
     public Topo loadTopoFromFile(File file) {
         JSONObject jsonTopo = DataHelper.fileToJSONObject(file);
-        return TopoHelper.extractTopo(jsonTopo);
+        Topo topo = TopoHelper.extractTopo(jsonTopo);
+        loadBitmaps(topo);
+        return topo;
+    }
+
+    private void loadBitmaps(Topo topo)
+    {
+        String[] photos = topo.getTopoPhotos();
+
+        for(String image : photos) {
+            if(image != null && !image.isEmpty()) {
+                int imageId = this.getResources().getIdentifier(
+                        image.substring(0, image.lastIndexOf('.'))
+                        , "raw"
+                        , getActivity().getPackageName()
+                );
+
+                if (imageId != 0) {
+                    InputStream imageIS = this.getResources().openRawResource(imageId);
+                    Bitmap myImage = BitmapFactory.decodeStream(imageIS);
+
+                    mPhotos.put(image,myImage);
+                }
+            }
+        }
+    }
+
+    public boolean isPhotoLoaded(String photo) {
+        return mPhotos.containsKey(photo);
+    }
+
+    public Bitmap getBitmap(String photo) {
+       return mPhotos.get(photo);
     }
 
     public ArrayList<File> getTopoFiles() {
