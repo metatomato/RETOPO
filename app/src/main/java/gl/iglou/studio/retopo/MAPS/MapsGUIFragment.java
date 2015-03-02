@@ -268,16 +268,4 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 }

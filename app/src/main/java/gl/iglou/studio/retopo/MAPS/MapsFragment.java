@@ -7,11 +7,8 @@ import android.app.Fragment;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,8 +33,10 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
     private final String TAG = "MapsManager";
 
-    private final int MAPS_FRAG = 0;
-    private final int TIMELINE_FRAG = 1;
+    private final int WAIT_FOR_GOOGLE = 1000;
+    private Handler mGoogleMapsAccess;
+    private Runnable mGoogleMapsAccessTask;
+    private int mGoogleAccessAttemp = 0;
 
     private MapsTimeLineFragment mTimeLineFragment;
     private MapsGUIFragment mMapsGUIFragment;
@@ -49,7 +48,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
     private TopoManagerFragment mTopoManager;
     private Topo mCurrentTopo;
-    private int mCurrentMilestone;
+    private Trace mCurrentMilestone;
+    private int mCurrentMilestoneIndex;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,15 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
         mTimeLineFragment = new MapsTimeLineFragment();
         mMapsGUIFragment = new MapsGUIFragment();
+
+        mGoogleMapsAccess = new Handler();
+        mGoogleMapsAccessTask = new Runnable() {
+            @Override
+            public void run() {
+                onGoogleAccessAttemp();
+                onGoogleAccessSucess();
+            }
+        };
     }
 
     @Override
@@ -82,6 +91,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
         mTopoManager = ((ReTopoActivity)getActivity()).getTopoManager();
         mCurrentTopo = mTopoManager.getCurrentTopo();
+        mCurrentMilestone = mCurrentTopo.getMilestone(0);
+        mCurrentMilestoneIndex = 0;
     }
 
     private void launchMapsFragment() {
@@ -92,34 +103,49 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
 
     public void onPostInit() {
+        Log.v(TAG,"POST INIT CALL!!");
         mMapFragment = mMapsGUIFragment.getMapFragment();
         if(mMapFragment != null) {
             mMapFragment.getMapAsync(this);
             if(mIsGoogleMapReady) {
-                setMilestoneCard(mCurrentTopo.getMilestone(mCurrentMilestone));
+                onGoogleAccessSucess();
             } else {
-                Handler googleMapsAccess = new Handler();
-                googleMapsAccess.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        googleMapsAccess.postDelayed(this,WAIT_FOR_GOOGLE);
-                    }
-                });
+                mGoogleMapsAccess.post(mGoogleMapsAccessTask);
             }
 
         } else {
             Log.v(TAG, "MapFragment is null!!");
-        }
+       }
     }
 
 
-    private void onGoogleMapsAccess() {
+    private void onGoogleAccessAttemp() {
+        mGoogleAccessAttemp++;
+        if(mGoogleAccessAttemp > 5) {
+            Log.v(TAG,"Exceeded attemp max number... Aborting.");
+            mGoogleMapsAccess.removeCallbacksAndMessages(null);
+        }else {
+            Log.v(TAG,"Attemp maps access " + String.valueOf(mGoogleAccessAttemp));
+            mGoogleMapsAccess.postDelayed(mGoogleMapsAccessTask, WAIT_FOR_GOOGLE);
+        }
+    }
 
+    private void onGoogleAccessSucess() {
+        if(mIsGoogleMapReady) {
+            Log.v(TAG,"Sucess! Google is ready!");
+            setMilestoneCard(mCurrentTopo.getMilestone(mCurrentMilestoneIndex));
+            Location loc = getCurrentTopo().getMilestone(mCurrentMilestoneIndex).getLocation(0);
+            addMarker(loc);
+            updateCamera(loc);
+            mGoogleMapsAccess.removeCallbacksAndMessages(null);
+        }
     }
 
     public void setMapsListener(OnMapsEvent listener) {
         mListeners.add(listener);
     }
+
+
 
 
     @Override
@@ -158,13 +184,17 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
     }
 
+    private void updateCard() {
+        setMilestoneCard(mCurrentMilestone);
+    }
+
 
     public Topo getCurrentTopo() {
         return mTopoManager.getCurrentTopo();
     }
 
     public Trace getNext() {
-        int currentMilestone = mCurrentMilestone;
+        int currentMilestone = mCurrentMilestoneIndex;
         if((currentMilestone + 1) < mCurrentTopo.getMilestoneNum()) {
             currentMilestone++;
         } else {
@@ -175,11 +205,11 @@ MapsTimeLineFragment.OnTimeLineListerner{
     }
 
     public Trace getCurrent() {
-        return mCurrentTopo.getMilestone(mCurrentMilestone);
+        return mCurrentTopo.getMilestone(mCurrentMilestoneIndex);
     }
 
     public Trace getPrev() {
-        int currentMilestone = mCurrentMilestone;
+        int currentMilestone = mCurrentMilestoneIndex;
         if((currentMilestone - 1) > 0) {
             currentMilestone--;
         } else {
@@ -207,7 +237,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
 
     @Override
     public void onMilestoneSelected(int index) {
-        mCurrentMilestone = index;
+        mCurrentMilestoneIndex = index;
+        mCurrentMilestone = mCurrentTopo.getMilestone(mCurrentMilestoneIndex);
         launchMapsFragment();
     }
 }
