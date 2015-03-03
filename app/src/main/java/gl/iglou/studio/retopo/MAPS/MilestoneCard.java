@@ -62,13 +62,6 @@ public class MilestoneCard extends RelativeLayout {
         mtextDate = (TextView) findViewById(R.id.text_date);
     }
 
-    public void setMileStoneCard(Long date, String title, String comment, String photo) {
-        setTime(date);
-        setDate(date);
-        setTitle(title);
-        setTextComment(comment);
-        setImageTrace(photo);
-    }
 
     public void setMileStoneCard(Trace milestone) {
         setTime(milestone.getDate());
@@ -87,7 +80,6 @@ public class MilestoneCard extends RelativeLayout {
     }
 
     public void setImageTrace(String image) {
-        Log.e(TAG, "Loading image trace " + image);
         DataManagerFragment dataManager = ((ReTopoActivity) mContext).getDataManager();
         if(dataManager.isPhotoLoaded(image)) {
             mImageTrace.setImageBitmap(dataManager.getBitmap(image));

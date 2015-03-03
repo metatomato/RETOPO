@@ -28,15 +28,19 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
 
     private final String TAG = "MapsGUI";
 
-    private final int ON_SCREEN_CARD = 0;
-    private final int OFF_SCREEN_CARD = 1;
+    public final int CURRENT_CARD = 0;
+    public final int NEXT_CARD = 1;
+    public final int PREV_CARD = 2;
 
     private ImageButton mButtonPin;
     private MapFragment mMapFragment;
+    private MilestoneCard mCardTwo;
     private MilestoneCard mCardOne;
     private MilestoneCard mCardZero;
-    private MilestoneCard mOnScreenCard;
-    private MilestoneCard mOffScreenCard;
+    private MilestoneCard mCurrentCard;
+    private MilestoneCard mNextCard;
+    private MilestoneCard mPrevCard;
+    private MilestoneCard mMoveInCard;
 
     private float mDisplacementRatio = 0.f;
     private float initX = 0.f;
@@ -46,8 +50,8 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     private boolean mIsCardInitialed = false;
     private boolean mIsCardOut = false;
     private boolean mIsCardAnimated = false;
-    private float mCardZeroX, mCardZeroY;
-    private float mCardOneX, mCardOneY;
+    private float mCardInX, mCardInY;
+    private float mCardOffX, mCardOffY;
     private float mCardWidth, mCardHeight;
     private int mDisplayX, mDisplayY;
     private ObjectAnimator mAnimCardOut;
@@ -88,17 +92,21 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
         mMapsManager = (OnMapsGUIListener) getParentFragment();
 
         mCardZero = (MilestoneCard) rootView.findViewById(R.id.milestone_container);
-
         mCardOne = (MilestoneCard) rootView.findViewById(R.id.milestone_container_0);
+        mCardTwo = (MilestoneCard) rootView.findViewById(R.id.milestone_container_1);
 
         mCardZero.setOnTouchListener(this);
         mCardOne.setOnTouchListener(this);
+        mCardTwo.setOnTouchListener(this);
 
        mDisplayX = ((ReTopoActivity) getActivity()).getDisplayWidth();
        mDisplayY = ((ReTopoActivity)getActivity()).getDisplayHeigh();
 
-        mOnScreenCard = mCardZero;
-        mOffScreenCard = mCardOne;
+        mCurrentCard = mCardZero;
+        mNextCard = mCardOne;
+        mPrevCard = mCardTwo;
+
+        mMoveInCard = mNextCard;
 
         return rootView;
     }
@@ -108,6 +116,7 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
         super.onActivityCreated(savedInstanceState);
 
         mMapsManager.onPostInit();
+        Log.v(TAG,"MAPSGUI POST INIT!!");
     }
 
     public MapFragment getMapFragment() {
@@ -124,10 +133,10 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     public boolean onTouch(View v, MotionEvent event) {
 
         if(!mIsCardInitialed) {
-            mCardZeroX = mCardZero.getX();
-            mCardZeroY = mCardZero.getY();
-            mCardOneX = mCardOne.getX();
-            mCardOneY = mCardOne.getY();
+            mCardInX = mCardZero.getX();
+            mCardInY = mCardZero.getY();
+            mCardOffX = mCardOne.getX();
+            mCardOffY = mCardOne.getY();
             mCardWidth = mCardOne.getWidth();
             mCardHeight = mCardOne.getHeight();
             mIsCardInitialed = true;
@@ -138,35 +147,44 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 initX = event.getRawX();
-                initCardX = mOnScreenCard.getX();
-                initCardY = mOffScreenCard.getY();
+                initCardX = mCurrentCard.getX();
+                initCardY = mNextCard.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 dX = initX - event.getRawX();
-                mDisplacementRatio = dX / mCardWidth;
+                mDisplacementRatio = Math.abs(dX) / mCardWidth;
                 if(!mIsCardAnimated) {
-                    mOnScreenCard.setTranslationX(-dX);
-                    mOffScreenCard.setY(initCardY - mCardHeight * mDisplacementRatio);
-                    mOffScreenCard.setAlpha(mDisplacementRatio);
+                    float currentY = initCardY - mCardHeight * mDisplacementRatio;
+                    if(mCurrentCard.getX() < mCardInX) {
+                        mNextCard.setY(currentY);
+                        mNextCard.setAlpha(mDisplacementRatio);
+                        mMoveInCard = mNextCard;
+
+                    } else {
+                        mPrevCard.setY(currentY);
+                        mPrevCard.setAlpha(mDisplacementRatio);
+                        mMoveInCard = mPrevCard;
+                    }
+                    mCurrentCard.setTranslationX(-dX);
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                float currentX = mOnScreenCard.getX();
-                float currentY = mOffScreenCard.getY();
-                float finalX = mCardZeroX;
-                float finalY = mCardOneY;
+                float currentX = mCurrentCard.getX();
+                float currentY = mMoveInCard.getY();
+                float finalX = mCardInX;
+                float finalY = mCardOffY;
                 float finalAlpha = 0f;
                 long duration = 500;
-                if(currentX < (-1* mCardWidth/2f) ) {
-                    finalX = -1* mCardWidth;
-                    finalY = mCardZeroY;
+                if(Math.abs(currentX + mCardInX) > (mCardWidth/2f) ) {
+                    finalX = currentX / Math.abs(currentX) * mCardWidth;
+                    finalY = mCardInY;
                     finalAlpha = 1f;
                     duration = 100;
                     mIsCardOut = true;
                 }
                 animateCardOut(currentX,finalX,duration);
-                animateCardIn(currentY,finalY,duration);
-                animateCardFadeIn(mDisplacementRatio,finalAlpha,duration);
+                animateCardIn(mMoveInCard,currentY,finalY,duration);
+                animateCardFadeIn(mMoveInCard,mDisplacementRatio,finalAlpha,duration);
                 break;
             case MotionEvent.ACTION_CANCEL:
 
@@ -177,39 +195,43 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
 
     private void animateCardOut(float from, float to, long duration) {
         mIsCardAnimated = true;
-        mAnimCardOut = ObjectAnimator.ofFloat(mOnScreenCard, "X", from, to);
+        mAnimCardOut = ObjectAnimator.ofFloat(mCurrentCard, "X", from, to);
         mAnimCardOut.setDuration(duration);
         mAnimCardOut.addListener(this);
         mAnimCardOut.start();
     }
 
-    private void animateCardIn(float from, float to, long duration) {
-        mAnimCardIn = ObjectAnimator.ofFloat(mOffScreenCard, "Y", from, to);
+    private void animateCardIn(MilestoneCard card, float from, float to, long duration) {
+        mAnimCardIn = ObjectAnimator.ofFloat(card, "Y", from, to);
         mAnimCardIn.setDuration(400);
         mAnimCardIn.addListener(this);
         mAnimCardIn.setInterpolator(new OvershootInterpolator(5f));
         mAnimCardIn.start();
     }
 
-    private void animateCardFadeIn(float from, float to, long duration) {
-        mAnimFadeCardIn = ObjectAnimator.ofFloat(mOffScreenCard,"alpha", from,1f);
+    private void animateCardFadeIn(MilestoneCard card, float from, float to, long duration) {
+        mAnimFadeCardIn = ObjectAnimator.ofFloat(card,"alpha", from,1f);
         mAnimFadeCardIn.setDuration(duration);
         mAnimFadeCardIn.start();
     }
 
 
-    public void setMileStoneCard(Trace milestone) {
-        setCard(ON_SCREEN_CARD,milestone);
+    public void updateCard() {
+        setCard(CURRENT_CARD,mMapsManager.getCurrent());
+        setCard(NEXT_CARD,mMapsManager.getNext());
+        setCard(PREV_CARD,mMapsManager.getPrev());
     }
-
 
     private void setCard(int cardId, Trace milestone) {
         switch(cardId) {
-            case ON_SCREEN_CARD:
-                mOnScreenCard.setMileStoneCard(milestone);
+            case CURRENT_CARD:
+                mCurrentCard.setMileStoneCard(milestone);
                 break;
-            case OFF_SCREEN_CARD:
-                mOffScreenCard.setMileStoneCard(milestone);
+            case NEXT_CARD:
+                mNextCard.setMileStoneCard(milestone);
+                break;
+            case PREV_CARD:
+                mPrevCard.setMileStoneCard(milestone);
                 break;
         }
     }
@@ -229,13 +251,26 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
             mIsCardAnimated = false;
         }
         if(mIsCardOut) {
-            mOnScreenCard.setX(mCardOneX);
-            mOnScreenCard.setY(mCardOneY);
-            MilestoneCard temp = mOnScreenCard;
-            mOnScreenCard = mOffScreenCard;
-            mOffScreenCard = temp;
-            mOnScreenCard.setElevation(4 * ((ReTopoActivity)getActivity()).getDpWidth());
-            mOffScreenCard.setElevation(0);
+            int cardType;
+            mCurrentCard.setX(mCardOffX);
+            mCurrentCard.setY(mCardOffY);
+            MilestoneCard temp = mCurrentCard;
+            mCurrentCard = mMoveInCard;
+
+            if(mMoveInCard.equals(mNextCard)) {
+                mNextCard = temp;
+                mNextCard.setElevation(0);
+                cardType = NEXT_CARD;
+            } else {
+                mPrevCard = temp;
+                mPrevCard.setElevation(0);
+                cardType = PREV_CARD;
+            }
+
+            mCurrentCard.setElevation(4 * ((ReTopoActivity) getActivity()).getDpWidth());
+
+            mMapsManager.onCardChange(cardType);
+
             mIsCardOut = false;
         }
 
@@ -260,10 +295,11 @@ public class MapsGUIFragment extends Fragment implements View.OnTouchListener, A
     public interface OnMapsGUIListener {
         public void onCardListClick();
         public void onPostInit();
+        public void onCardChange(int cardType);
         public Trace getNext();
         public Trace getCurrent();
         public Trace getPrev();
-        public void requestCardUpdate(int index);
+
     }
 
 
