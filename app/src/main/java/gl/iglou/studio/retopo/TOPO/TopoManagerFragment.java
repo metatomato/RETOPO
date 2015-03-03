@@ -62,6 +62,8 @@ public class TopoManagerFragment extends Fragment{
             mCurrentTopo = mTopos.get(0);
         }
 
+        mCurrentTopo = mDataManager.loadDummyTopo();
+
     }
 
     public Topo getCurrentTopo() {

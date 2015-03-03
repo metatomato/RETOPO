@@ -57,6 +57,8 @@ public class DataManagerFragment extends Fragment {
 
        checkLocalDirTree();
        parseData();
+
+
     }
 
     private void checkLocalDirTree() {
@@ -73,12 +75,14 @@ public class DataManagerFragment extends Fragment {
         mTopoFiles = FileSystemHelper.getFilesByExtension(mDataFile, TOPO_EXTENSION);
     }
 
-    private Topo loadDummyTopo() {
+    public Topo loadDummyTopo() {
         Resources res = getResources();
         InputStream input = res.openRawResource(R.raw.kyoto);
 
         JSONObject jsonTopo = DataHelper.rawToJSONObject(input);
         Topo topo = TopoHelper.extractTopo(jsonTopo);
+
+        loadBitmaps(topo);
 
         return topo;
     }
