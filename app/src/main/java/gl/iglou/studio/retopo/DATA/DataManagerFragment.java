@@ -107,8 +107,12 @@ public class DataManagerFragment extends Fragment {
                 );
 
                 if (imageId != 0) {
-                    InputStream imageIS = this.getResources().openRawResource(imageId);
-                    Bitmap myImage = BitmapFactory.decodeStream(imageIS);
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 4;
+                    Bitmap myImage = BitmapFactory.decodeResource(getResources(), imageId, options);
+
+//                    InputStream imageIS = this.getResources().openRawResource(imageId);
+//                    Bitmap myImage = BitmapFactory.decodeStream(imageIS);
 
                     mPhotos.put(image,myImage);
                 }
