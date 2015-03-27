@@ -14,12 +14,14 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import gl.iglou.studio.retopo.CLOUD.CloudManagerFragment;
 import gl.iglou.studio.retopo.DATA.DataManagerFragment;
 import gl.iglou.studio.retopo.MAPS.MapsFragment;
 import gl.iglou.studio.retopo.MAPS.MapsGUIFragment;
@@ -49,6 +51,7 @@ public class ReTopoActivity extends ActionBarActivity {
     private MapsFragment mMapsManager;
     private DataManagerFragment mDataManagerFragment;
     private TopoManagerFragment mTopoManager;
+    private CloudManagerFragment mCloudManager;
 
 
     String[] mFragmentLabel;
@@ -144,6 +147,11 @@ public class ReTopoActivity extends ActionBarActivity {
         if(mMapsManager == null) {
             mMapsManager = new MapsFragment();
             fm.beginTransaction().add(mMapsManager, "MapsFrag").commit();
+        }
+        if(mCloudManager == null) {
+            Log.v("CLOUD", "starting CloudManager from retop activity");
+            mCloudManager = new CloudManagerFragment();
+            fm.beginTransaction().add(mCloudManager, "CloudFrag").commit();
         }
 
         contentViewResolver(MAPS_FRAGMENT);
