@@ -30,7 +30,7 @@ public class CloudManagerFragment extends Fragment {
         Log.v(TAG,"CloudManager onCreate call...");
 
         mCloudHelper = new CloudHelper();
-        mCloudHelper.fetchDataFromUrl("http://retopo.studio.iglou.gl/topo");
+        mCloudHelper.fetchDataFromUrl("http://retopo.cloud.iglou.gl/topo?callback=topoRequest&user_id=metatomato");
 
     }
 

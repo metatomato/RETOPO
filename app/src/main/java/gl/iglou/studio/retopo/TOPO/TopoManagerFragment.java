@@ -33,6 +33,8 @@ public class TopoManagerFragment extends Fragment{
 
     private ArrayList<Topo> mTopos;
 
+    private ArrayList<File> mTopoFiles;
+
     private Topo mCurrentTopo;
 
 
@@ -45,6 +47,7 @@ public class TopoManagerFragment extends Fragment{
         super.onCreate(savedInstanceState);
 
         mTopos = new ArrayList<>();
+        mTopoFiles = new ArrayList<>();
     }
 
     @Override
@@ -56,13 +59,15 @@ public class TopoManagerFragment extends Fragment{
         ArrayList<File> files = mDataManager.getTopoFiles();
         for(File file : files){
             mTopos.add(mDataManager.loadTopoFromFile(file));
+            mTopoFiles.add(file);
+            Log.v(TAG,"Found Topo file " + file.getName());
         }
 
         if(!mTopos.isEmpty()) {
             mCurrentTopo = mTopos.get(0);
         }
 
-        mCurrentTopo = mDataManager.loadDummyTopo();
+       // mCurrentTopo = mDataManager.loadDummyTopo();
 
     }
 

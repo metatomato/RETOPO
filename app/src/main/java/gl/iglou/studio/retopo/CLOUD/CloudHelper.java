@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -61,7 +62,7 @@ public class CloudHelper {
         }
     }
 
-    /**
+    /**w
      * Initiates the fetch operation.
      */
     private String loadFromNetwork(String urlString) throws IOException {
@@ -70,7 +71,7 @@ public class CloudHelper {
 
         try {
             stream = downloadUrl(urlString);
-            str = readIt(stream, 500);
+            str = readIt(stream);
         } finally {
             if (stream != null) {
                 stream.close();
@@ -93,7 +94,7 @@ public class CloudHelper {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(10000 /* milliseconds */);
         conn.setConnectTimeout(15000 /* milliseconds */);
-        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
         conn.setDoInput(true);
         // Start the query
         conn.connect();
@@ -111,7 +112,7 @@ public class CloudHelper {
      * @throws java.io.IOException
      * @throws java.io.UnsupportedEncodingException
      */
-    private String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
+    private String readIt(InputStream stream) throws IOException{
         StringBuilder builder = new StringBuilder();
 
         BufferedReader bufferReader = new BufferedReader( new InputStreamReader(stream, "UTF-8") );
