@@ -17,7 +17,7 @@
 
     <item>
         <scale
-            android:drawable="@drawable/launcher_icon_map"
+            android:drawable="@drawable/launcher_icon_capture"
             android:scaleGravity="center"
             android:scaleHeight="60%"
             android:scaleWidth="60%" />

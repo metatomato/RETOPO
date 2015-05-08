@@ -7,6 +7,7 @@ import android.graphics.drawable.ScaleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +83,7 @@ public class LauncherCompactFragment extends Fragment implements View.OnClickLis
 
         int count = viewGroup.getChildCount();
 
+
         if(((ReTopoActivity)getActivity()).getDpWidth() < 600.f) {
             count = viewGroup.getChildCount() - 1;
         }
@@ -90,6 +92,7 @@ public class LauncherCompactFragment extends Fragment implements View.OnClickLis
         for (int i = 0; i < count ; i++) {
             View child = viewGroup.getChildAt(i);
             result.add(child);
+            Log.v(TAG,"Found Rocket " + String.valueOf(i));
         }
         return result;
     }
