@@ -85,8 +85,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
         super.onActivityCreated(savedInstanceState);
 
         mTopoManager = ((ReTopoActivity)getActivity()).getTopoManager();
-        mCurrentTopo = mTopoManager.getCurrentTopo();
-        mCurrentMilestone = mCurrentTopo.getMilestone(5);
+        //mCurrentTopo = mTopoManager.getCurrentTopo();
+        //mCurrentMilestone = mCurrentTopo.getMilestone(5);
         mCurrentMilestoneIndex = 5;
     }
 
@@ -139,7 +139,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
     private void onGoogleAccessSucess() {
         if(mIsGoogleMapReady) {
             Log.v(TAG,"Sucess! Google is ready!");
-            updateCard();
+            //updateCard();
+            mTopoManager.enterDisplayMode();
             mGoogleMapsAccess.removeCallbacksAndMessages(null);
         }
     }

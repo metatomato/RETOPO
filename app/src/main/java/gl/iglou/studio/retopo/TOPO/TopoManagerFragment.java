@@ -1,6 +1,8 @@
 package gl.iglou.studio.retopo.TOPO;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -29,6 +31,10 @@ public class TopoManagerFragment extends Fragment{
 
     private final String TAG = "TopoManager";
 
+    private final String SAVED_STATE_SOCKET = "gl.iGLou.studio.retopo.SAVED_STATE_SOCKET";
+    private final String SAVED_LAST_MODE = "SAVED_LAST_MODE";
+    private final String SAVED_LAST_TOPO = "SAVED_LAST_TOPO";
+
     private DataManagerFragment mDataManager;
 
     private ArrayList<Topo> mTopos;
@@ -37,6 +43,7 @@ public class TopoManagerFragment extends Fragment{
 
     private Topo mCurrentTopo;
 
+    private TopoSavedState mState;
 
     public TopoManagerFragment() {
         // Required empty public constructor
@@ -48,6 +55,7 @@ public class TopoManagerFragment extends Fragment{
 
         mTopos = new ArrayList<>();
         mTopoFiles = new ArrayList<>();
+        mState = new TopoSavedState();
     }
 
     @Override
@@ -67,13 +75,35 @@ public class TopoManagerFragment extends Fragment{
             mCurrentTopo = mTopos.get(0);
         }
 
+        loadState();
+        Log.v(TAG,"Loaded State: " + mState.toString());
        // mCurrentTopo = mDataManager.loadDummyTopo();
+    }
 
+    public void enterDisplayMode() {
+        writeState(TopoSavedState.TOPO_DISPLAY_MODE,mCurrentTopo.getTitle());
+        Log.v(TAG,"enterDisplayMode");
     }
 
     public Topo getCurrentTopo() {
         return mCurrentTopo;
     }
 
+    private void loadState() {
+        Context context = getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences(SAVED_STATE_SOCKET, Context.MODE_PRIVATE);
+        int lastMode = sharedPref.getInt(SAVED_LAST_MODE, -1);
+        mState.setLastMode(lastMode);
+        String lastTopo = sharedPref.getString(SAVED_LAST_TOPO, "");
+        mState.setLastTopo(lastTopo);
+    }
+
+    private void writeState(int currentMode, String currentTopo) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(SAVED_STATE_SOCKET, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(SAVED_LAST_MODE, currentMode);
+        editor.putString(SAVED_LAST_TOPO, currentTopo);
+        editor.commit();
+    }
 
 }
