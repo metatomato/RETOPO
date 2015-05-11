@@ -140,6 +140,7 @@ MapsTimeLineFragment.OnTimeLineListerner{
         if(mIsGoogleMapReady) {
             Log.v(TAG,"Sucess! Google is ready!");
             //updateCard();
+            updatePosition();
             mTopoManager.enterDisplayMode();
             mGoogleMapsAccess.removeCallbacksAndMessages(null);
         }
@@ -175,6 +176,8 @@ MapsTimeLineFragment.OnTimeLineListerner{
         mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(loc.getLatitude(), loc.getLongitude()))
                 .title("I'm Here!"));
+
+        updateCamera(loc);
     }
 
     public void updateCamera(Location loc) {

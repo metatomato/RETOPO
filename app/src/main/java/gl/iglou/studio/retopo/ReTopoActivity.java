@@ -3,6 +3,7 @@ package gl.iglou.studio.retopo;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.location.Location;
@@ -16,10 +17,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
 
 import gl.iglou.studio.retopo.CLOUD.CloudManagerFragment;
 import gl.iglou.studio.retopo.DATA.DataManagerFragment;
@@ -75,6 +79,7 @@ public class ReTopoActivity extends ActionBarActivity {
         mNavigationDrawer = findViewById(R.id.navigation_drawer);
 
         mDrawerLayout.setScrimColor(Color.TRANSPARENT);
+
 
         //Metrics Stuffs
         mDisplayMetrics = this.getResources().getDisplayMetrics();
@@ -197,6 +202,7 @@ public class ReTopoActivity extends ActionBarActivity {
         getSupportActionBar().setTitle(mFragmentLabel[fragmentId]);
 
         closeDrawer();
+
     }
 
     private void closeDrawer() {
@@ -221,7 +227,6 @@ public class ReTopoActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 
     public int getDisplayWidth() {
